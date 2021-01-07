@@ -14,10 +14,23 @@ def inner_restaurant_link(self, object):
     return mark_safe(link)
 
 
+def make_is_cloded_true(restaurantadmin, request, queryset):
+    queryset.update(is_closed=True)
+
+
+def make_is_cloded_false(restaurantadmin, request, queryset):
+    queryset.update(is_closed=False)
+
+
+make_is_cloded_true.short_description = "Make selected restaurants closed"
+make_is_cloded_false.short_description = "Make selected restaurants not closed"
+
+
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'address')
+    list_display = ('name', 'description', 'address', 'is_closed')
     list_filter = (['is_closed'])
     search_fields = (['name', 'address'])
+    actions = [make_is_cloded_true, make_is_cloded_false]
 
 
 class FavouriteAdmin(admin.ModelAdmin):
@@ -56,10 +69,23 @@ class MenuItemAdmin(admin.ModelAdmin):
     restaurant_link.short_description = 'Restaurant'
 
 
+def make_currently_free_true(tableadmin, request, queryset):
+    queryset.update(currently_free=True)
+
+
+def make_currently_free_false(tableadmin, request, queryset):
+    queryset.update(currently_free=False)
+
+
+make_currently_free_true.short_description = "Make selected tables as currently free"
+make_currently_free_false.short_description = "Make selected tables as currently not free"
+
+
 class TableAdmin(admin.ModelAdmin):
     list_display = ('number', 'restaurant_link', 'currently_free')
     list_filter = (['restaurant', 'currently_free'])
     search_fields = (['restaurant__name'])
+    actions = [make_currently_free_true, make_currently_free_false]
 
     def restaurant_link(self, table):
         return inner_restaurant_link(self, table)
