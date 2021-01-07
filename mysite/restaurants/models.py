@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -33,11 +34,13 @@ class Review(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    posted = models.DateTimeField(
+        'posted time', default=timezone.now, blank=True)
 
     def __str__(self):
         guest = self.guest.user.get_full_name(
         ) if self.guest.user.get_full_name() else self.guest.user.username
-        return guest + " review on " + self.restaurant.name
+        return guest + " posted on " + self.restaurant.name
 
 
 class MenuItem(models.Model):
