@@ -1,17 +1,35 @@
 from django.contrib import admin
+from .models import Reservation, ReservedTable, LastVisit
 from django.utils.safestring import mark_safe
 from django.urls import reverse
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
-from .models import Reservation, ReservedTable, LastVisit
+
+# Resource models for import and export
+class ReservationResource(resources.ModelResource):
+    class Meta:
+        model = Reservation
 
 
-class ReservationAdmin(admin.ModelAdmin):
+class ReservedTableResource(resources.ModelResource):
+    class Meta:
+        model = ReservedTable
+
+
+class LastVisitResource(resources.ModelResource):
+    class Meta:
+        model = LastVisit
+
+
+# Admin models
+class ReservationAdmin(ImportExportModelAdmin):
     list_display = ('reservation', 'restaurant_link',
                     'guest', 'coming', 'duration')
     list_filter = (['restaurant__name', 'guest__user__username', 'coming'])
     search_fields = (['restaurant__name', 'guest__user__username',
                       'guest__user__first_name', 'guest__user__last_name'])
+    resource_class = ReservationResource
 
     def reservation(self, reservation):
         return reservation.restaurant.name + " Reservation"
@@ -24,17 +42,19 @@ class ReservationAdmin(admin.ModelAdmin):
     restaurant_link.short_description = 'Restaurant'
 
 
-class ReservedTableAdmin(admin.ModelAdmin):
+class ReservedTableAdmin(ImportExportModelAdmin):
     list_display = ('table', 'reservation')
     search_fields = (['reservation__restaurant__name', 'reservation__guest__user__username',
                       'reservation__guest__user__first_name', 'reservation__guest__user__last_name'])
+    resource_class = ReservedTableResource
 
 
-class LastVisitAdmin(admin.ModelAdmin):
+class LastVisitAdmin(ImportExportModelAdmin):
     list_display = ('reservation', 'guest')
     list_filter = (['guest__user__username'])
     search_fields = (['reservation__restaurant__name', 'guest__user__username',
                       'guest__user__first_name', 'guest__user__last_name'])
+    resource_class = LastVisitResource
 
 
 admin.site.register(Reservation, ReservationAdmin)
