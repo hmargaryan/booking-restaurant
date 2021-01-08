@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@qp97n5yt(&5ks@(s)srxe+@(^3z4+j8ucwiu4=y5y$d@j2+gz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['restaurant-booking-django.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
