@@ -1,1 +1,1 @@
-web: gunicorn restaurant-booking-django.wsgi --log-file -
+web: gunicorn mysite.wsgi
