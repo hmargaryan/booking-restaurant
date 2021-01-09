@@ -67,9 +67,10 @@ make_currently_free_false.short_description = "Make selected tables as currently
 
 # Admin models
 class RestaurantAdmin(ImportExportModelAdmin):
-    list_display = ('name', 'description', 'address', 'is_closed')
-    list_filter = (['is_closed'])
-    search_fields = (['name', 'address'])
+    list_display = ('name', 'description', 'address',
+                    'place_type', 'average_check', 'is_closed')
+    list_filter = (['is_closed', 'place_type'])
+    search_fields = (['name', 'address', 'place_type'])
     actions = [make_is_cloded_true, make_is_cloded_false]
     resource_class = RestaurantResource
 

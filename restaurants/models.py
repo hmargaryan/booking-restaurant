@@ -8,6 +8,8 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null=True, blank=True)
+    place_type = models.CharField(max_length=200, default="Restaurant")
+    average_check = models.FloatField(default=1)
     rows = models.IntegerField(validators=[MinValueValidator(1)])
     columns = models.IntegerField(validators=[MinValueValidator(1)])
     tables = models.IntegerField(validators=[MinValueValidator(1)])

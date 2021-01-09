@@ -4,6 +4,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Reservation(models.Model):
+    people = models.IntegerField(default=1, validators=[
+                                 MinValueValidator(1), MaxValueValidator(50)])
     coming = models.DateTimeField('reservation time')
     duration = models.IntegerField(
         default=1, validators=[MinValueValidator(1), MaxValueValidator(24)])
@@ -17,7 +19,8 @@ class Reservation(models.Model):
         place = self.restaurant.name
         time = self.coming
         duration = self.duration
-        return person + " in " + place + " at " + str(time) + " for " + str(duration) + " hours"
+        people = self.people
+        return person + " in " + place + " at " + str(time) + " for " + str(duration) + " hours with " + str(people - 1) + " person/people"
 
 
 class ReservedTable(models.Model):
